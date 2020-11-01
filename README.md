@@ -4,6 +4,7 @@
 # https://github.com/JoaoWesley/appointment-api.git
 
 ## How to run
+ - To make it simple for execution .env file and firebase private key was commited
  - On the project root folder run `npm install` then `npm run dev`
  - Then the application will be available at: http://localhost:3001
 
