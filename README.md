@@ -26,6 +26,19 @@
 - DotEnv: Load environment variables
 - FirebaseAdmin: Interact with firebase resources 
 
+## Database
+
+Database design was very simple, there is a event collection which holds all events documents with the following structure
+````json  
+    {
+        "duration": 30,
+        "dateTime": "2020-01-01T13:00:00Z"
+    }    
+````
+
+Duration as the name suggest is how long the event lasts in minutes, dateTime is the date and time of when the vent will occur, the date is saved in 
+UTC so that we can convert it to whatever timezone is needed.
+
 ## Tests
 - Mocha: Test framework for javascript
 - Chai: Assertion library
