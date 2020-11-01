@@ -13,7 +13,7 @@ export const getFreeSlots = async (req, res) => {
   }
 
   const freeSlots = await slotService.getFreeSlots(
-    req.query.dateTime,
+    req.query.date,
     req.query.timeZone
   )
   res.status(HttpStatus.OK).json(freeSlots)

@@ -11,7 +11,7 @@ describe('Slot controller', () => {
     const req = {
       query: {
         timeZone: 'America/Sao_Paulo',
-        dateTime: '2020-11-01',
+        date: '2020-11-01',
       },
     }
     const res = {
@@ -31,7 +31,7 @@ describe('Slot controller', () => {
     const req = {
       query: {
         timeZone: null,
-        dateTime: '2020-11-01',
+        date: '2020-11-01',
       },
     }
     const res = {
@@ -54,7 +54,7 @@ describe('Slot controller', () => {
     const req = {
       query: {
         timeZone: 'America/Sao_Paulo',
-        dateTime: null,
+        date: null,
       },
     }
     const res = {

@@ -4,14 +4,11 @@ import moment from 'moment'
 import appointmentConfig from '../config/appointment-config'
 import * as appointmentConfigService from '../services/appointmentConfigService'
 
-export const getFreeSlots = async (requestedDateTime, timeZone) => {
-  const requestedDateTimeConverted = momentTimezone.tz(
-    requestedDateTime,
-    timeZone
-  )
-  const requestedDateTimeUtc = moment.utc(requestedDateTimeConverted).format()
+export const getFreeSlots = async (requestedDate, timeZone) => {
+  const requestedDateConverted = momentTimezone.tz(requestedDate, timeZone)
+  const requestedTimeUtc = moment.utc(requestedDateConverted).format()
 
-  const requestedDateUtc = moment.utc(requestedDateTimeUtc).format('YYYY-MM-DD')
+  const requestedDateUtc = moment.utc(requestedTimeUtc).format('YYYY-MM-DD')
   const {
     startHoursDateTimeUtc,
     endHoursDateTimeUtc,
@@ -49,7 +46,7 @@ export const getFreeSlots = async (requestedDateTime, timeZone) => {
       const nowInConfigTimeZone = momentTimezone.tz(moment.utc(), timeZone)
       const isDateRequestedNow =
         nowInConfigTimeZone.format('YYYY-MM-DD') ===
-        requestedDateTimeConverted.format('YYYY-MM-DD')
+        requestedDateConverted.format('YYYY-MM-DD')
 
       if (isDateRequestedNow) {
         //Check if date already passed
