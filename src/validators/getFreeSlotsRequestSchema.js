@@ -1,10 +1,10 @@
-import Joi from '@hapi/joi';
+import Joi from '@hapi/joi'
 
 const getFreSlotsRequestSchema = Joi.object()
   .keys({
     dateTime: Joi.date().required(),
-    timeZone: Joi.string().required()
+    timeZone: Joi.string().required(),
   })
-  .required();
+  .required()
 
 export default getFreSlotsRequestSchema

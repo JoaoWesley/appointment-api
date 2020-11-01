@@ -4,14 +4,17 @@ import getFreeSlotsRequestSchema from '../../validators/getFreeSlotsRequestSchem
 
 export const getFreeSlots = async (req, res) => {
   const { error: validationError } = getFreeSlotsRequestSchema.validate(
-    req.query,
-  );
+    req.query
+  )
   if (validationError) {
     return res
       .status(HttpStatus.UNPROCESSABLE_ENTITY)
       .json({ message: validationError.message })
   }
 
-  const freeSlots = await slotService.getFreeSlots(req.query.dateTime, req.query.timeZone)
+  const freeSlots = await slotService.getFreeSlots(
+    req.query.dateTime,
+    req.query.timeZone
+  )
   res.status(HttpStatus.OK).json(freeSlots)
 }

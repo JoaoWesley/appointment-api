@@ -1,8 +1,5 @@
 import express from 'express'
-import {
-  getEvents,  
-  postEvent,  
-} from '../../controllers/api/eventController'
+import { getEvents, postEvent } from '../../controllers/api/eventController'
 
 const router = express()
 

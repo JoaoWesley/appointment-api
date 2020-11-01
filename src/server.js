@@ -7,13 +7,14 @@ import cors from 'cors'
 
 const app = express()
 
-app.use(cors({
+app.use(
+  cors({
     credentials: true,
     origin: variables.CLIENT_BASE_URL,
     methods: 'OPTIONS,GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
-  }
-))
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+  })
+)
 app.use(bodyParser.json())
 
 app.use('/event', eventRoute)
