@@ -1,9 +1,20 @@
 import HttpStatus from 'http-status-codes'
 import * as eventService from '../../services/eventService'
-import eventRequestSchema from '../../validators/eventRequestSchema'
+import createEventRequestSchema from '../../validators/createEventRequestSchema'
+import getEventsRequestSchema from '../../validators/getEventsRequestSchema'
 import exceptionCode from '../../commons/types/exceptionCode'
 
-export const getEvents = async (req, res) => {
+export const getEvents = async (req, res) => {  
+  const { error: validationError } = getEventsRequestSchema.validate(
+    req.query,
+  );
+  if (validationError) {
+    return res
+      .json({ message: validationError.message })
+      .status(HttpStatus.UNPROCESSABLE_ENTITY)
+      .end();
+  }
+
   const events = await eventService.getEvents(req.query.startDate, req.query.endDate)
   if(events.length === 0) {
     return res.status(HttpStatus.OK).json({ message: 'Not events was found for the specified period' })  
@@ -12,7 +23,7 @@ export const getEvents = async (req, res) => {
 }
 
 export const postEvent = async (req, res) => { 
-  const { validationError, value: updateParams } = eventRequestSchema.validate(
+  const { error: validationError } = createEventRequestSchema.validate(
     req.body,
   );
 

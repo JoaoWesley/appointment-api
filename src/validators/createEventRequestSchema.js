@@ -1,9 +1,9 @@
 import Joi from '@hapi/joi';
 
-const eventRequestSchema = Joi.object()
+const createEventRequestSchema = Joi.object()
   .keys({
     dateTime: Joi.date().required(),    
   })
   .required();
 
-export default eventRequestSchema
+export default createEventRequestSchema
