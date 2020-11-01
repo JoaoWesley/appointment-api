@@ -8,31 +8,38 @@ export const getEventsBetweenDates = async (startDate, endDate) => {
   const eventCollection = getEventCollection();
 
   const allEventsBetweenDatesRef = await eventCollection
-    .where('dateTime', '>=', (new Date(startDate)))
-    .where('dateTime', '<=', (new Date(endDate))).get();
+    .where('dateTime', '>=', startDate)
+    .where('dateTime', '<=', endDate).get();
 
-  if (allEventsBetweenDatesRef.empty) {
-    console.log('No matching documents.');
-    return;
+  if (allEventsBetweenDatesRef.empty) {    
+    return [];
   }  
 
   const allEventsBetweenDates = [];
   allEventsBetweenDatesRef.forEach((doc) => {
     const event = {
       ...doc.data(),
-      dateTime: doc.data().dateTime.toDate()
+      dateTime: moment.utc(doc.data().dateTime).format()
     }    
     allEventsBetweenDates.push(event);
   });
   return allEventsBetweenDates
 }
 
-export const save = async () => {
-    const eventCollection = getEventCollection();    
-    const setEventProperties = await eventCollection.add({});
-
+export const save = async (dateTime, duration) => {
+  const eventCollection = getEventCollection();    
+  const eventCreated =  await eventCollection.add({ dateTime, duration });  
+  return { id: eventCreated.id };
 }
 
-export const getEventCollection = (email) => {
+export const checkIfEventExists = async (dateTime) => {
+  const eventCollection = getEventCollection();  
+
+  const eventRef = await eventCollection.where('dateTime', '==', dateTime).get();
+  
+  return !eventRef.empty
+}
+
+export const getEventCollection = () => {
   return db.collection('event');
 }

@@ -23,12 +23,18 @@
             "skipFiles": [
                 "<node_internals>/**"
             ]
+         
         },
         {
             "type": "node",
             "request": "attach",
             "name": "Launch Program",
             "protocol": "inspector"
-        }        
-    ]
+          
+        }      
+    ],
+    "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+    ],      
 }
