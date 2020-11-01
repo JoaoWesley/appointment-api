@@ -10,9 +10,8 @@ export const getEvents = async (req, res) => {
   );
   if (validationError) {
     return res
-      .json({ message: validationError.message })
       .status(HttpStatus.UNPROCESSABLE_ENTITY)
-      .end();
+      .json({ message: validationError.message })      
   }
 
   const events = await eventService.getEvents(req.query.startDate, req.query.endDate)
@@ -29,9 +28,8 @@ export const postEvent = async (req, res) => {
 
   if (validationError) {
     return res
-      .json({ message: validationError.message })
       .status(HttpStatus.UNPROCESSABLE_ENTITY)
-      .end();
+      .json({ message: validationError.message })
   }
 
   try {

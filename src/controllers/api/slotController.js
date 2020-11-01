@@ -8,11 +8,10 @@ export const getFreeSlots = async (req, res) => {
   );
   if (validationError) {
     return res
-      .json({ message: validationError.message })
       .status(HttpStatus.UNPROCESSABLE_ENTITY)
-      .end();
+      .json({ message: validationError.message })
   }
 
-  const lessons = await slotService.getFreeSlots(req.query.dateTime, req.query.timeZone)
-  res.status(HttpStatus.OK).json(lessons)
+  const freeSlots = await slotService.getFreeSlots(req.query.dateTime, req.query.timeZone)
+  res.status(HttpStatus.OK).json(freeSlots)
 }
