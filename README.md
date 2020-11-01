@@ -36,7 +36,7 @@ Database design was very simple, there is a event collection which holds all eve
     }    
 ````
 
-Duration as the name suggest is how long the event lasts in minutes, dateTime is the date and time of when the vent will occur, the date is saved in 
+Duration as the name suggests is how long the event lasts in minutes, dateTime is the date and time of when the event will occur, the date is saved in 
 UTC so that we can convert it to whatever timezone is needed.
 
 ## Tests
