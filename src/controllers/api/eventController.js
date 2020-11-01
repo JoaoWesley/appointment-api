@@ -27,11 +27,15 @@ export const postEvent = async (req, res) => {
     const eventCreated = await eventService.createEvent(req.body.dateTime)
     res.status(HttpStatus.OK).json(eventCreated)
   } catch (error) {
-    if(error.code === exceptionCode.EVENT_ALREADY_EXISTS) {
+    if(
+      error.code === exceptionCode.EVENT_ALREADY_EXISTS || 
+      error.code === exceptionCode.OUTSIDE_AVAILABLE_HOURS || 
+      error.code === exceptionCode.INVALID_TIME_FOR_SLOT
+      ) {
       return res
         .status(HttpStatus.UNPROCESSABLE_ENTITY)
         .json({ message: error.message })
-    }
+    }   
 
     res
       .status(HttpStatus.BAD_REQUEST)

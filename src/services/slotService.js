@@ -2,25 +2,20 @@ import * as EventsModel from '../models/eventsModel'
 import * as momentTimezone from 'moment-timezone';
 import moment from 'moment'
 import appointmentConfig from '../config/appointment-config'
+import * as appointmentConfigService from '../services/appointmentConfigService'
 
 export const getFreeSlots = async (requestedDateTime, timeZone) => {    
   const requestedDateTimeConverted = momentTimezone.tz(requestedDateTime, timeZone);
   const requestedDateTimeUtc = moment.utc(requestedDateTimeConverted).format();  
 
-  const requestedDate =  moment.utc(requestedDateTimeUtc).format('YYYY-MM-DD')
-  
-  const startHoursWithConfigTimeZone = momentTimezone.tz(`${requestedDate} ${appointmentConfig.START_HOURS}`, appointmentConfig.TIMEZONE);
-  const startHoursDateTimeUtc = moment.utc(startHoursWithConfigTimeZone) // Testar sem formatar
+  const requestedDateUtc =  moment.utc(requestedDateTimeUtc).format('YYYY-MM-DD')
+  const { startHoursDateTimeUtc,  endHoursDateTimeUtc } = appointmentConfigService.getStartAndEndHoursFromDate(requestedDateUtc);  
 
-  const endHoursConfigTimeZone = momentTimezone.tz(`${requestedDate} ${appointmentConfig.END_HOURS}`, appointmentConfig.TIMEZONE);    
-  const endHoursDateTimeUtc = moment.utc(endHoursConfigTimeZone) // Testar sem formatar
-  
-
-  //Getting all events within 24 hours of the requested day
-  const events = await EventsModel.getEventsBetweenDates( 
-    moment.utc(requestedDate).format('YYYY-MM-DD HH:mm'),
-    moment.utc(requestedDate + '23:59').format('YYYY-MM-DD HH:mm')    
-  );
+  //Getting all events within available hours of the requested day
+  const events = await EventsModel.getEventsBetweenDates(     
+    startHoursDateTimeUtc.format(),
+    endHoursDateTimeUtc.format()
+  );  
 
   const freeSlots = []
   let elapsedTime = startHoursDateTimeUtc;  
@@ -29,10 +24,28 @@ export const getFreeSlots = async (requestedDateTime, timeZone) => {
     
     if(!findEventsBooked) {
       const elapsedTimeConvertedToRequestedTimeZone = momentTimezone.tz(elapsedTime, timeZone);
-      freeSlots.push(elapsedTimeConvertedToRequestedTimeZone.format('HH:mm'))
-    }
-    elapsedTime = elapsedTime.add(appointmentConfig.DURATION_IN_MINUTES, 'minutes');
-  }
+      const isDifferentDay = elapsedTimeConvertedToRequestedTimeZone.format('DD') !==  moment.utc(requestedDateUtc).format('DD');
+      if(isDifferentDay) {//if the day changes then stops
+        break;
+      }
 
+      //Check if the date requested is now      
+      const nowInConfigTimeZone = momentTimezone.tz(moment.utc(), timeZone);
+      const isDateRequestedNow = nowInConfigTimeZone.format('YYYY-MM-DD') === requestedDateTimeConverted.format('YYYY-MM-DD')
+
+      if(isDateRequestedNow) {
+        //Check if date already passed
+        const isUnavailableTimeSlot = elapsedTimeConvertedToRequestedTimeZone.format('HH:mm') < nowInConfigTimeZone.format('HH:mm')
+        if(isUnavailableTimeSlot) {
+          elapsedTime = elapsedTime.add(appointmentConfig.DURATION_IN_MINUTES, 'minutes');
+          continue;
+        }
+      }                 
+
+      freeSlots.push(elapsedTimeConvertedToRequestedTimeZone.format('YYYY-MM-DD HH:mm'))
+    }
+    elapsedTime = elapsedTime.add(appointmentConfig.DURATION_IN_MINUTES, 'minutes');    
+  }  
+  
   return freeSlots;  
 }
