@@ -4,7 +4,7 @@
 # https://github.com/JoaoWesley/appointment-api.git
 
 ## How to run
- - On the project root folder run npm install then npm run dev
+ - On the project root folder run `npm install` then `npm run dev`
  - Then the application will be available at: http://localhost:3001
 
 ### Linter
@@ -54,7 +54,7 @@ This request return all events between two dates
     {startDate} - Initial date
     {endDate} - Final date
 
-The date can have offset following iso 8601 pattern if none is provided UTC will considered default.
+The date provided can have offset following iso 8601 pattern if none is provided UTC will considered default.
 
 #### Response
 
@@ -73,7 +73,7 @@ The date can have offset following iso 8601 pattern if none is provided UTC will
 
 ### - Get free slots
 
-Returns all free slots available from a given date
+Returns all free slots available for a given date
 
 #### HTTP Method
 
@@ -85,7 +85,7 @@ Returns all free slots available from a given date
 
 #### Parameters
 
-    {timeZone} - Timezone to the given date
+    {timeZone} - Timezone for the given date
     {date} - Final date
 
 The date can have offset following iso 8601 pattern if none is provided UTC will be considered default.
