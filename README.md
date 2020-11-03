@@ -15,8 +15,6 @@
   - Run the command `npm run test` to execute all the tests on the application.
 
 # Dependencies
-
-## Backend
 - NodeJS: JavaScript runtime
 - Express: Web framework
 - Body-parser: Receive request body 
@@ -25,6 +23,9 @@
 - Nodemon: Hot reload
 - DotEnv: Load environment variables
 - FirebaseAdmin: Interact with firebase resources 
+- Mocha: Test framework for javascript
+- Chai: Assertion library
+
 
 ## Database
 
@@ -37,11 +38,7 @@ Database design was very simple, there is a event collection which holds all eve
 ````
 
 Duration as the name suggest is how long the event lasts in minutes, dateTime is the date and time of when the event will occur, the date is saved in 
-UTC so that we can convert it to whatever timezone is needed.
-
-## Tests
-- Mocha: Test framework for javascript
-- Chai: Assertion library
+UTC so that we can convert it to whatever timezone is needed. Firestore already does a very good job at scaling resources as much as needed in a clever way, given the simple design we are working with I don't think further action is needed.
 
 # API DOCUMENTATION
 
