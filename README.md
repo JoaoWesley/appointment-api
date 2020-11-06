@@ -33,11 +33,12 @@ Database design was very simple, there is a event collection which holds all eve
 ````json  
     {
         "duration": 30,
-        "dateTime": "2020-01-01T13:00:00Z"
+        "startDateTime": "2020-01-01T13:00:00Z",
+        "endDateTime": "2020-01-01T13:30:00Z"
     }    
 ````
 
-Duration as the name suggest is how long the event lasts in minutes, dateTime is the date and time of when the event will occur, the date is saved in 
+Duration as the name suggest is how long the event lasts in minutes, startDateTime is the date and time of when the event will occur, endDateTime is when the event will end, both dates is saved in 
 UTC so that we can convert it to whatever timezone is needed. Firestore already does a very good job at scaling resources as much as needed in a clever way, given the simple design we are working with I don't think further action is needed.
 
 # API DOCUMENTATION
@@ -72,13 +73,15 @@ The date provided can have offset following iso 8601 pattern if none is provided
 ````json
   [
     {
-        "duration": 30,
-        "dateTime": "2020-01-01T13:00:00Z"
+        "startDateTime": "2020-02-01T16:00:00Z",
+        "endDateTime": "2020-02-01T18:00:00Z",
+        "duration": 120
     },
     {
-        "dateTime": "2020-01-01T18:00:00Z",
-        "duration": 30
-    },
+        "endDateTime": "2020-02-01T19:00:00Z",
+        "duration": 60,
+        "startDateTime": "2020-02-01T18:00:00Z"
+    }
   ]
 ````
 
@@ -105,14 +108,19 @@ The date can have offset following iso 8601 pattern if none is provided UTC will
 
 ````json
   [
-    {
-        "duration": 30,
-        "dateTime": "2020-01-01T13:00:00Z"
-    },
-    {
-        "dateTime": "2020-01-01T18:00:00Z",
-        "duration": 30
-    },
+    "2020-02-01 16:00",
+    "2020-02-01 16:30",
+    "2020-02-01 17:00",
+    "2020-02-01 17:30",
+    "2020-02-01 18:00",
+    "2020-02-01 18:30",
+    "2020-02-01 19:00",
+    "2020-02-01 19:30",
+    "2020-02-01 20:00",
+    "2020-02-01 20:30",
+    "2020-02-01 21:00",
+    "2020-02-01 21:30",
+    "2020-02-01 22:00"
   ]
 ````
 
@@ -130,12 +138,14 @@ This request creates a event
 #### Parameters
 
     {dateTime} - Date and time to create event, offset can be provided inside the string following the ISO 8601 format, otherwise UTC will be considered default.
+    {duration} - How long the event will last.
 
 This Parameter must be sent over as json in the request body, see below:
 
 ````json
   {
-    "dateTime": "2020-02-01T20:30:00-03:00"
+    "dateTime": "2020-02-01T20:30:00-03:00",
+    "duration": 60
   }
 ````
 
