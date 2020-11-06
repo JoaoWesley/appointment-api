@@ -75,7 +75,7 @@ describe('Event controller', () => {
 
   it('[post event] should return 200 and json object', async () => {
     const req = {
-      body: { dateTime: '2020-02-01T20:30:00-03:00' },
+      body: { dateTime: '2020-02-01T20:30:00-03:00', duration: 60 },
     }
 
     const res = {
