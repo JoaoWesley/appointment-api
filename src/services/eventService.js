@@ -12,7 +12,7 @@ export const getEvents = async (startDate, endDate) => {
   return EventsModel.getEventsBetweenDates(startDate, endDate)
 }
 
-export const createEvent = async (dateTime) => {
+export const createEvent = async (dateTime, duration) => {
   dateTime = moment.utc(dateTime).format()
 
   if (await EventsModel.checkIfEventExists(dateTime)) {
@@ -27,7 +27,17 @@ export const createEvent = async (dateTime) => {
     throw new invalidTimeForSlotException()
   }
 
-  return EventsModel.save(dateTime, appointmentConfig.DURATION_IN_MINUTES)
+  let endTimeInMinutes = appointmentConfig.DURATION_IN_MINUTES
+  while (endTimeInMinutes < duration) {
+    endTimeInMinutes += appointmentConfig.DURATION_IN_MINUTES
+  }
+
+  const endDateTime = moment
+    .utc(dateTime)
+    .add(endTimeInMinutes, 'minutes')
+    .format()
+
+  return EventsModel.save(dateTime, duration, endDateTime)
 }
 
 export const checkIfOutSideAvailableHours = (dateTime) => {

@@ -34,7 +34,10 @@ export const postEvent = async (req, res) => {
   }
 
   try {
-    const eventCreated = await eventService.createEvent(req.body.dateTime)
+    const eventCreated = await eventService.createEvent(
+      req.body.dateTime,
+      req.body.duration
+    )
     res.status(HttpStatus.OK).json(eventCreated)
   } catch (error) {
     if (

@@ -25,8 +25,10 @@ export const getFreeSlots = async (requestedDate, timeZone) => {
   while (elapsedTime.format() <= endHoursDateTimeUtc.format()) {
     const findEventsBooked = events.find(
       (event) =>
-        moment.utc(event.dateTime).format('YYYY-MM-DD HH:mm') ===
-        elapsedTime.format('YYYY-MM-DD HH:mm')
+        elapsedTime.format('YYYY-MM-DD HH:mm') >=
+          moment.utc(event.startDateTime).format('YYYY-MM-DD HH:mm') &&
+        elapsedTime.format('YYYY-MM-DD HH:mm') <
+          moment.utc(event.endDateTime).format('YYYY-MM-DD HH:mm')
     )
 
     if (!findEventsBooked) {
