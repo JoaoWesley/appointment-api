@@ -15,7 +15,7 @@ export const getEvents = async (startDate, endDate) => {
 export const createEvent = async (dateTime, duration) => {
   dateTime = moment.utc(dateTime).format()
 
-  if (await EventsModel.checkIfEventExists(dateTime)) {
+  if (await EventsModel.checkIfEventExists(dateTime, duration)) {
     throw new eventAlreadyExistsException()
   }
 
