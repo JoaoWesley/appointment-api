@@ -7,3 +7,4 @@ node_modules/
 dist
 coverage
 .nyc_output
+src/config/database/firebase-admin-sdk-config.json
